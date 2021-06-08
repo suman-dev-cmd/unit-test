@@ -1,54 +1,54 @@
-import Enzyme,{shallow} from 'enzyme';
+import Enzyme,{mount} from 'enzyme';
 import EnzymeAdapter  from '@wojtekmaj/enzyme-adapter-react-17';
 import Input from './Input';
-import {findByTestArr,CheckProps} from '../test/testUtils';
+import {findByTestArr,CheckProps,storeFactory} from '../test/testUtils';
 import React from 'react';
+import {Provider} from 'react-redux';
 Enzyme.configure({adapter: new EnzymeAdapter()});
 
-const setup=(success=false,secrectWord='party') => {
-    return shallow(<Input success={success} secrectWord={secrectWord} />);
+const setup=(initialState={},secrectWord='party') => {
+    const store = storeFactory(initialState);
+    return mount(<Provider store={store}><Input  secrectWord={secrectWord} /></Provider>);
 };
 
 test('does not throw warning with expected props', () => {
     CheckProps(Input,{secrectWord:'party'});
 });
 describe('render',()=>{
-    describe('success is true',()=>{
+    describe('success is false',()=>{
         let wrapper;
         beforeEach(()=>{
-            wrapper = setup(true);
+            wrapper = setup({success:false});
         })
         test('Inputs render without error', () => {
-            const wrapper = setup();
             const appComponent = findByTestArr(wrapper,'component-input');
             expect(appComponent.length).toBe(1)
         });
         test('input box does not show', () => {
             const inputBox = findByTestArr(wrapper,'input-box');
-            expect(inputBox.exists()).toBe(false);
+            expect(inputBox.exists()).toBe(true);
         });
         test('submit button does not show', () => {
             const submitButton = findByTestArr(wrapper,'submit-button');
-            expect(submitButton.exists()).toBe(false);
+            expect(submitButton.exists()).toBe(true);
         });
     });
-    describe('success is false',()=>{
+    describe('success is true',()=>{
         let wrapper;
         beforeEach(()=>{
-            wrapper = setup(false);
+            wrapper = setup({success:true});
         })
         test('Inputs render without error', () => {
-            const wrapper = setup();
             const appComponent = findByTestArr(wrapper,'component-input');
             expect(appComponent.length).toBe(1)
         });
         test('input box  show', () => {
             const inputBox = findByTestArr(wrapper,'input-box');
-            expect(inputBox.exists()).toBe(true);
+            expect(inputBox.exists()).toBe(false);
         });
         test('submit button  show', () => {
             const submitButton = findByTestArr(wrapper,'submit-button');
-            expect(submitButton.exists()).toBe(true);
+            expect(submitButton.exists()).toBe(false);
         });
     });
 });
@@ -60,7 +60,7 @@ describe('state controlled input filed',()=>{
         mockSetCurrentGuess.mockClear();
         originaluseState = React.useState;
         React.useState = jest.fn(()=>["",mockSetCurrentGuess]);
-        wrapper = setup();
+        wrapper = setup({success:false});
     });
     afterEach(()=>{
         React.useState=originaluseState;
