@@ -3,14 +3,7 @@ import { mount } from 'enzyme';
 import { findByTestAttr, checkProps, storeFactory } from '../test/testUtils';
 import { Provider } from 'react-redux';
 
-import Input from './Input';
-
-// mock entire module for destructuring useState on import //////
-// const mockSetCurrentGuess = jest.fn();
-// jest.mock('react', () => ({
-//   ...jest.requireActual('react'),
-//   useState: (initialState) => [initialState, mockSetCurrentGuess]
-// }))
+import Input from './Input'
 
 const setup = (initialState={}, secretWord='party') => {
   const store = storeFactory(initialState);

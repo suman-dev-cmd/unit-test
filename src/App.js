@@ -11,12 +11,9 @@ function App() {
   const success = useSelector((state) => state.success);
   const guessedWords = useSelector((state) => state.guessedWords);
   const secretWord = useSelector((state) => state.secretWord);
-
-  // so that we can dispatch an action
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // get the secret word
     dispatch(getSecretWord());
   }, []);
 

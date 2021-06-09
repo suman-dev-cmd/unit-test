@@ -7,13 +7,7 @@ export const actionTypes = {
   SET_SECRET_WORD: 'SET_SECRET_WORD',
 };
 
-/**
- * Returns Redux Thunk function that dispatches GUESS_WORD action
- *     and (conditionally) CORRECT_GUESS action
- * @function guessWord
- * @param {string} guessedWord - Guessed word.
- * @returns {function} - Redux Thunk function.
-*/
+
 export const guessWord = (guessedWord) => {
   return function(dispatch, getState) {
     const secretWord = getState().secretWord;
@@ -30,11 +24,7 @@ export const guessWord = (guessedWord) => {
   };
 };
 
-/**
- * Returns Redux Thunk function that initiates an axios request
- *    and dispatches the response as a 'SET_SECRET_WORD' action
- * @returns {function} - Redux Thunk function.
- */
+
 export const getSecretWord = () => {
   return function(dispatch) {
     return axios.get('http://localhost:3030')

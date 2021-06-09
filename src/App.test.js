@@ -5,14 +5,10 @@ import { Provider } from "react-redux";
 import { findByTestAttr, storeFactory } from "../test/testUtils";
 import App from "./App";
 
-// activate global mock to make sure getSecretWord doesn't make network call
 jest.mock("./actions");
 import { getSecretWord as mockGetSecretWord } from "./actions";
 
-/**
- * Setup function for App component
- * @returns {Wrapper}
- */
+
 const setup = () => {
   const store = storeFactory();
   return mount(
@@ -39,9 +35,6 @@ describe("get secret word", () => {
   test("getSecretWord does not run on app update", () => {
     const wrapper = setup();
     mockGetSecretWord.mockClear();
-
-    // using setProps because wrapper.update() doesn't trigger useEffect
-    // https://github.com/enzymejs/enzyme/issues/2254
     wrapper.setProps();
 
     expect(mockGetSecretWord).toHaveBeenCalledTimes(0);

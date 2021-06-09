@@ -5,26 +5,15 @@ import { Provider } from 'react-redux';
 import App from './App';
 import { findByTestAttr, storeFactory } from '../test/testUtils.js';
 
-// activate global mock to make sure getSecretWord doesn't make network call
+
 jest.mock('./actions');
 
-/**
- * Create wrapper with specified initial conditions,
- * then submit a guessed word of 'train'
- # @function
- *
- * @param {object} state - Initial conditions.
- * @returns {Wrapper} - Enzyme wrapper of mounted App component
- */
+
 const setup = (initialState = {}) => {
   const store = storeFactory(initialState)
   const wrapper = mount(<Provider store={store}><App /></Provider>);
-
-  // add value to input box
   const inputBox = findByTestAttr(wrapper, 'input-box');
   inputBox.simulate('change', { target: { value: 'train' } });
-
-  // simulate click on submit button
   const submitButton = findByTestAttr(wrapper, 'submit-button');
   submitButton.simulate('click', { preventDefault() {} });
 
@@ -70,12 +59,12 @@ describe('guess secret word', () => {
     	guessedWords: [{ guessedWord: 'agile', letterMatchCount: 1 }],
   	});
 
-    // add value to input box
+    
     const inputBox = findByTestAttr(wrapper, 'input-box');
     const mockEvent = { target: { value: 'party' } };
     inputBox.simulate('change', mockEvent);
 
-  	// simulate click on submit button
+  	
   	const submitButton = findByTestAttr(wrapper, 'submit-button');
   	submitButton.simulate('click', { preventDefault() {} });
   });
