@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-import { useState,useEffect } from 'react';
-import Congrats from './Congrats';
-import GussedWord from './GussedWord';
-import Input from './Input';
-import {getSecretWord} from './actions'
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import "./App.css";
+
+import Congrats from "./Congrats";
+import GuessedWords from "./GuessedWords";
+import Input from "./Input";
+import { getSecretWord } from "./actions";
+
 function App() {
-  const [count,setCount] = useState(0)
-  const success = false;
-  const secrectWord = 'party';
-  const gussedWords = [];
-  useEffect(()=>{
-    getSecretWord();
-  },[])
+  const success = useSelector((state) => state.success);
+  const guessedWords = useSelector((state) => state.guessedWords);
+  const secretWord = useSelector((state) => state.secretWord);
+
+  // so that we can dispatch an action
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // get the secret word
+    dispatch(getSecretWord());
+  }, []);
+
   return (
-    <div className="App" data-test='component-app'>
-      <h1 data-test='component-display'>Display Counter <span data-test="component-count">{count}</span></h1>
-      <button data-test='component-button' onClick={()=>setCount(count+1)}>Increment</button>
-      <Congrats success={success}/>
-      <Input success={success} secrectWord={secrectWord} />
-      <GussedWord gussedWords={gussedWords} />
+    <div data-test="component-app" className="container">
+      <h1>Jotto</h1>
+      <Congrats success={success} />
+      <Input success={success} secretWord={secretWord} />
+      <GuessedWords guessedWords={guessedWords} />
     </div>
   );
 }
